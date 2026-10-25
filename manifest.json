@@ -11,7 +11,7 @@
   "theme_color": "#7867e8",
   "icons": [
     {
-      "src": "/my-budget-tracker/pochacco.png",
+      "src": "/my-budget-tracker/pochacco-purple.png"
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
