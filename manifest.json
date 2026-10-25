@@ -7,13 +7,13 @@
   "scope": "/my-budget-tracker/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#f5f6fa",
+  "background_color": "#7867e8",
   "theme_color": "#7867e8",
   "icons": [
     {
-      "src": "/my-budget-tracker/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/my-budget-tracker/pochacco.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any"
     }
   ]
