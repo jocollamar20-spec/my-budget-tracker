@@ -1,0 +1,740 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Budget Tracker</title>
+
+<style>
+:root {
+    --bg: #f5f6fa;
+    --card: #ffffff;
+    --text: #24283b;
+    --muted: #777d90;
+    --primary: #7867e8;
+    --green: #179b72;
+    --red: #e45b69;
+    --border: #e8e9f0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+header {
+    background: var(--card);
+    padding: 20px 6%;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+header h1 {
+    font-size: 23px;
+    margin: 0;
+}
+
+header p {
+    color: var(--muted);
+    margin: 6px 0 0;
+    font-size: 13px;
+}
+
+main {
+    max-width: 1150px;
+    margin: auto;
+    padding: 25px 18px;
+}
+
+h2 {
+    font-size: 18px;
+    margin-top: 0;
+}
+
+.section {
+    margin-bottom: 25px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.card, .panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.card p {
+    color: var(--muted);
+    font-size: 13px;
+    margin: 0 0 12px;
+}
+
+.card h2 {
+    font-size: 23px;
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.income { color: var(--green); }
+.expense { color: var(--red); }
+.savings { color: var(--primary); }
+
+.layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 14px 0 7px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    font-size: 14px;
+    background: white;
+    color: var(--text);
+}
+
+button {
+    padding: 11px 15px;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.primary {
+    background: var(--primary);
+    color: white;
+}
+
+.secondary {
+    background: #efedff;
+    color: var(--primary);
+}
+
+.danger {
+    background: #fff0f1;
+    color: var(--red);
+}
+
+.full {
+    width: 100%;
+    margin-top: 17px;
+}
+
+.progress {
+    height: 11px;
+    background: #eeedf7;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 15px 0;
+}
+
+.progress div {
+    height: 100%;
+    width: 0%;
+    background: var(--primary);
+    border-radius: 20px;
+    transition: width .3s;
+}
+
+.budget-progress div {
+    background: var(--green);
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.category-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.category-item {
+    border: 1px solid var(--border);
+    padding: 13px;
+    border-radius: 11px;
+}
+
+.category-item span {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 7px;
+}
+
+.category-item strong {
+    font-size: 15px;
+}
+
+.history-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+#filter {
+    width: auto;
+    min-width: 145px;
+}
+
+.transaction {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.transaction:last-child {
+    border-bottom: none;
+}
+
+.tx-name {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.tx-detail {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 5px;
+}
+
+.tx-right {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.tx-amount {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 7px;
+}
+
+.tx-right button {
+    padding: 6px 9px;
+}
+
+.empty {
+    text-align: center;
+    padding: 28px 10px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+@media (max-width: 750px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .card h2 {
+        font-size: 19px;
+    }
+
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    header {
+        padding: 17px;
+    }
+
+    header h1 {
+        font-size: 19px;
+    }
+
+    main {
+        padding: 18px 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div>
+        <h1>💜 My Budget Tracker</h1>
+        <p>Manage your money, one day at a time.</p>
+    </div>
+    <button class="secondary" onclick="exportCSV()">
+        Export CSV
+    </button>
+</header>
+
+<main>
+
+<section class="section">
+    <h2>My Dashboard</h2>
+    <div class="cards">
+        <div class="card">
+            <p>Monthly Budget</p>
+            <h2 id="budgetDisplay">₱0.00</h2>
+        </div>
+        <div class="card">
+            <p>Total Income</p>
+            <h2 class="income" id="incomeDisplay">₱0.00</h2>
+        </div>
+        <div class="card">
+            <p>Total Expenses</p>
+            <h2 class="expense" id="expenseDisplay">₱0.00</h2>
+        </div>
+        <div class="card">
+            <p>Remaining Balance</p>
+            <h2 id="balanceDisplay">₱0.00</h2>
+        </div>
+    </div>
+</section>
+
+<div class="layout section">
+
+    <section class="panel">
+        <h2>➕ Add Transaction</h2>
+
+        <form id="transactionForm">
+            <label for="type">Transaction Type</label>
+            <select id="type" required>
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+            </select>
+
+            <label for="description">Description</label>
+            <input id="description" placeholder="e.g. Weekly groceries" required maxlength="100">
+
+            <label for="amount">Amount (₱)</label>
+            <input id="amount" type="number" min="0.01" step="0.01"
+                   placeholder="0.00" required>
+
+            <label for="category">Category</label>
+            <select id="category" required></select>
+
+            <label for="date">Date</label>
+            <input id="date" type="date" required>
+
+            <button class="primary full" type="submit">
+                Add Transaction
+            </button>
+        </form>
+    </section>
+
+    <section class="panel">
+        <h2>🎯 Budget & Savings Goals</h2>
+
+        <label for="monthlyBudget">Monthly Budget (₱)</label>
+        <input id="monthlyBudget" type="number" min="0"
+               step="0.01" placeholder="e.g. 5000">
+
+        <button class="primary full" onclick="saveBudget()">
+            Save Monthly Budget
+        </button>
+
+        <div style="margin-top:25px">
+            <div class="progress-label">
+                <span>Monthly spending</span>
+                <strong id="budgetPercent">0%</strong>
+            </div>
+            <div class="progress budget-progress">
+                <div id="budgetBar"></div>
+            </div>
+            <div class="progress-label">
+                <span id="budgetUsed">₱0.00 spent</span>
+                <span id="budgetLeft">₱0.00 left</span>
+            </div>
+        </div>
+
+        <hr style="border:0;border-top:1px solid var(--border);margin:25px 0">
+
+        <label for="savingsGoal">Savings Goal (₱)</label>
+        <input id="savingsGoal" type="number" min="0"
+               step="0.01" placeholder="e.g. 10000">
+
+        <button class="secondary full" onclick="saveGoal()">
+            Save Savings Goal
+        </button>
+
+        <div style="margin-top:25px">
+            <div class="progress-label">
+                <span>Savings progress</span>
+                <strong id="savingsPercent">0%</strong>
+            </div>
+            <div class="progress">
+                <div id="savingsBar"></div>
+            </div>
+            <div class="progress-label">
+                <span id="savedAmount">₱0.00 saved</span>
+                <span id="goalLeft">₱0.00 to go</span>
+            </div>
+        </div>
+    </section>
+</div>
+
+<section class="panel section">
+    <h2>📊 Spending by Category</h2>
+    <div class="category-list" id="categorySummary"></div>
+</section>
+
+<section class="panel section">
+    <div class="history-top">
+        <h2>🧾 Transaction History</h2>
+        <select id="filter" aria-label="Filter transactions">
+            <option value="all">All transactions</option>
+            <option value="income">Income only</option>
+            <option value="expense">Expenses only</option>
+        </select>
+    </div>
+
+    <div id="transactionList"></div>
+</section>
+
+</main>
+
+<footer>
+    Your budget, your goals, your progress. 💜
+    <br>Data is saved in this browser on this device.
+</footer>
+
+<script>
+const categories = {
+    expense: [
+        "Grocery", "Food & Drinks", "Transportation",
+        "School Expenses", "Bills & Utilities", "Shopping",
+        "Health & Medicine", "Entertainment", "Savings",
+        "Emergency Fund", "Personal Care", "Others"
+    ],
+    income: [
+        "Allowance", "Salary", "Side Hustle",
+        "Gift", "Other Income"
+    ]
+};
+
+const $ = id => document.getElementById(id);
+const peso = amount => "₱" + Number(amount).toLocaleString(
+    "en-PH", {minimumFractionDigits: 2, maximumFractionDigits: 2}
+);
+
+let transactions = [];
+let budget = 0;
+let goal = 0;
+
+try {
+    transactions = JSON.parse(
+        localStorage.getItem("budgetTransactions") || "[]"
+    );
+    budget = Number(localStorage.getItem("budgetAmount")) || 0;
+    goal = Number(localStorage.getItem("savingsGoalAmount")) || 0;
+
+    if (!Array.isArray(transactions)) transactions = [];
+    transactions = transactions.filter(t =>
+        t && typeof t.id === "string" &&
+        ["income", "expense"].includes(t.type) &&
+        typeof t.amount === "number" && Number.isFinite(t.amount) &&
+        t.amount > 0 && typeof t.date === "string"
+    );
+} catch (error) {
+    transactions = [];
+    budget = 0;
+    goal = 0;
+}
+
+function saveData() {
+    try {
+        localStorage.setItem(
+            "budgetTransactions", JSON.stringify(transactions)
+        );
+        localStorage.setItem("budgetAmount", String(budget));
+        localStorage.setItem("savingsGoalAmount", String(goal));
+    } catch (error) {
+        alert("Unable to save data. Check your browser storage settings.");
+    }
+}
+
+function updateCategories() {
+    const type = $("type").value;
+    const previous = $("category").value;
+    $("category").innerHTML = "";
+
+    categories[type].forEach(category => {
+        const option = document.createElement("option");
+        option.value = category;
+        option.textContent = category;
+        $("category").appendChild(option);
+    });
+
+    if (categories[type].includes(previous)) {
+        $("category").value = previous;
+    }
+}
+
+$("type").addEventListener("change", updateCategories);
+$("filter").addEventListener("change", render);
+$("date").value = new Date().toLocaleDateString("en-CA");
+
+function monthTransactions() {
+    const now = new Date();
+    const month = now.getMonth();
+    const year = now.getFullYear();
+
+    return transactions.filter(t => {
+        const d = new Date(t.date + "T12:00:00");
+        return d.getMonth() === month && d.getFullYear() === year;
+    });
+}
+
+function sum(list) {
+    return list.reduce((total, t) => total + t.amount, 0);
+}
+
+function render() {
+    const monthly = monthTransactions();
+    const income = sum(monthly.filter(t => t.type === "income"));
+    const expenses = sum(monthly.filter(t => t.type === "expense"));
+    const balance = income - expenses;
+
+    $("budgetDisplay").textContent = peso(budget);
+    $("incomeDisplay").textContent = peso(income);
+    $("expenseDisplay").textContent = peso(expenses);
+    $("balanceDisplay").textContent = peso(balance);
+    $("balanceDisplay").style.color = balance < 0 ? "var(--red)" : "var(--text)";
+
+    $("monthlyBudget").value = budget || "";
+    $("savingsGoal").value = goal || "";
+
+    const spentPercent = budget > 0 ? expenses / budget * 100 : 0;
+    $("budgetPercent").textContent = Math.round(spentPercent) + "%";
+    $("budgetBar").style.width = Math.min(spentPercent, 100) + "%";
+    $("budgetUsed").textContent = peso(expenses) + " spent";
+    $("budgetLeft").textContent = peso(budget - expenses) + " left";
+    $("budgetLeft").style.color =
+        budget > 0 && expenses > budget ? "var(--red)" : "var(--muted)";
+
+    // Savings are counted when recorded as an expense in the Savings category.
+    const saved = sum(monthly.filter(t =>
+        t.type === "expense" &&
+        ["Savings", "Emergency Fund"].includes(t.category)
+    ));
+
+    const savedPercent = goal > 0 ? saved / goal * 100 : 0;
+    $("savingsPercent").textContent = Math.round(savedPercent) + "%";
+    $("savingsBar").style.width = Math.min(savedPercent, 100) + "%";
+    $("savedAmount").textContent = peso(saved) + " saved";
+    $("goalLeft").textContent = peso(Math.max(goal - saved, 0)) + " to go";
+
+    renderCategories(monthly);
+    renderTransactions();
+}
+
+function renderCategories(monthly) {
+    const summary = $("categorySummary");
+    summary.innerHTML = "";
+
+    categories.expense.forEach(category => {
+        const total = sum(monthly.filter(t =>
+            t.type === "expense" && t.category === category
+        ));
+
+        const item = document.createElement("div");
+        item.className = "category-item";
+
+        const label = document.createElement("span");
+        label.textContent = category;
+
+        const value = document.createElement("strong");
+        value.textContent = peso(total);
+
+        item.append(label, value);
+        summary.appendChild(item);
+    });
+}
+
+function renderTransactions() {
+    const list = $("transactionList");
+    list.innerHTML = "";
+
+    const filter = $("filter").value;
+    const visible = [...transactions]
+        .filter(t => filter === "all" || t.type === filter)
+        .sort((a, b) => b.date.localeCompare(a.date));
+
+    if (visible.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "No transactions yet. Add your first one above!";
+        list.appendChild(empty);
+        return;
+    }
+
+    visible.forEach(t => {
+        const row = document.createElement("div");
+        row.className = "transaction";
+
+        const info = document.createElement("div");
+        const name = document.createElement("div");
+        name.className = "tx-name";
+        name.textContent = t.description;
+
+        const detail = document.createElement("div");
+        detail.className = "tx-detail";
+        detail.textContent = `${t.category} • ${t.date}`;
+
+        info.append(name, detail);
+
+        const right = document.createElement("div");
+        right.className = "tx-right";
+
+        const amount = document.createElement("div");
+        amount.className = "tx-amount " +
+            (t.type === "income" ? "income" : "expense");
+        amount.textContent =
+            (t.type === "income" ? "+" : "−") + peso(t.amount);
+
+        const remove = document.createElement("button");
+        remove.className = "danger";
+        remove.textContent = "Delete";
+        remove.setAttribute("aria-label", "Delete " + t.description);
+        remove.addEventListener("click", () => deleteTransaction(t.id));
+
+        right.append(amount, remove);
+        row.append(info, right);
+        list.appendChild(row);
+    });
+}
+
+$("transactionForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const description = $("description").value.trim();
+    const amount = Number($("amount").value);
+    const type = $("type").value;
+    const category = $("category").value;
+    const date = $("date").value;
+
+    if (!description || !Number.isFinite(amount) ||
+        amount <= 0 || !date ||
+        !categories[type].includes(category)) {
+        alert("Please enter valid transaction details.");
+        return;
+    }
+
+    transactions.push({
+        id: Date.now().toString() + Math.random().toString(36).slice(2),
+        description,
+        amount: Math.round(amount * 100) / 100,
+        type,
+        category,
+        date
+    });
+
+    saveData();
+    $("description").value = "";
+    $("amount").value = "";
+    $("date").value = new Date().toLocaleDateString("en-CA");
+    render();
+});
+
+function saveBudget() {
+    const value = Number($("monthlyBudget").value);
+    if (!Number.isFinite(value) || value < 0) {
+        alert("Enter a valid monthly budget.");
+        return;
+    }
+    budget = Math.round(value * 100) / 100;
+    saveData();
+    render();
+}
+
+function saveGoal() {
+    const value = Number($("savingsGoal").value);
+    if (!Number.isFinite(value) || value < 0) {
+        alert("Enter a valid savings goal.");
+        return;
+    }
+    goal = Math.round(value * 100) / 100;
+    saveData();
+    render();
+}
+
+function deleteTransaction(id) {
+    if (!confirm("Delete this transaction?")) return;
+    transactions = transactions.filter(t => t.id !== id);
+    saveData();
+    render();
+}
+
+function exportCSV() {
+    const rows = [
+        ["Date", "Type", "Description", "Category", "Amount"],
+        ...transactions.map(t => [
+            t.date, t.type, t.description, t.category, t.amount.toFixed(2)
+        ])
+    ];
+
+    const csv = rows.map(row =>
+        row.map(value =>
+            '"' + String(value).replace(/"/g, '""') + '"'
+        ).join(",")
+    ).join("\r\n");
+
+    const blob = new Blob(["\uFEFF" + csv], {
+        type: "text/csv;charset=utf-8;"
+    });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "my-budget-transactions.csv";
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+updateCategories();
+render();
+</script>
+
+</body>
+</html>
