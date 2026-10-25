@@ -10,7 +10,7 @@
   "theme_color": "#7867e8",
   "icons": [
     {
-      "src": "/my-budget-tracker/icon.svg",
+      "src": "/my-budget-tracker/pochacco-purple-transparent.png"
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
